@@ -1,0 +1,47 @@
+---
+- name: add administrator dan
+  hosts: spark
+  remote_user: centos
+  become: true
+  tasks:
+
+    - name: add primary group
+      group: name=dan
+
+    - name: add user with admin groups
+      user:
+        name: dan
+        group: dan
+        groups: adm,wheel,systemd-journal
+
+    - name: add public key
+      authorized_key:
+        user: dan
+        key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAe7moSA0TtHyxho6+8Q26mcDFOkCivUl/WSPJ1LqUzPD9PCAuqrDfUaphmSd25uD2UNQUYx0kE6NCV5blv4RnJWiwnJrkcfnv1vw7LIJdnUGiLejdpdX3bChWcp8383tXIh5WO7wsi+wj5RE5/ZGjCDvW0nNHqqeOpqMGcnmWOPK7Upjqze7hNcXlzJhFSGs9zDVBElhmIydPU9RZbw2pv3K4oJfewfh7wreSwnP3jZ2wIIJmF3ATrsBuOSfO6OQlKAoKjtpXT64SbwbQeyv/QQwpmZzdpDYJSa7hoIvWRr8LsVaUKlpLa/FLlbs4nyuQfw+2GiGADh2Tw2bF1UnEeqaSZS5Khbg8RjwBsjVWlZ9ZW2zLiPaGX0QYCdFT7Ta5ZY4gCGNxxsPgWm401mB94kZ2OE50/KxKOTgtZCCTe3lvPy8Fha+eVLiP6c0Lb1tyWVzJCoHs76any6od9basr9nLxJAKi7A5gSyyR4ufPJbB4xJBY1kc5ok4gXHHuU/niWkUTfAe4Ky3u9zJaHY/1cVWBlO1qyxAVkHP3ZdzsMDZI8zYHwcTL2RQRiHp5yHy5AuNVO8v581dRu17Hv0v5NOG6abCpknJnnj80vzwABzIaf7EcgXluLjqxKYjHa6qEEijLyPdfuQF6nRA2WpBxhi/83BUWxAoztvOCQ47/w== gpg-auth-key
+
+    - name: write sudoers file
+      copy:
+        src: ./files/sudoers
+        dest: /etc/sudoers
+        backup: no
+
+- name: remove centos user
+  hosts: spark
+  remote_user: dan
+  become: true
+  tasks:
+
+    - name: kill centos processes
+      shell: pkill -u centos
+
+    - name: remove user
+      user:
+        name: centos
+        state: absent
+        remove: yes
+
+    - name: remove group
+      group:
+        name: centos
+        state: absent
+...

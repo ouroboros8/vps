@@ -1,0 +1,8 @@
+---
+- name: install tooling
+  hosts: spark
+  remote_user: dan
+  become: yes
+  tasks:
+    - yum: name=nmap-ncat state=latest
+...
