@@ -6,43 +6,6 @@ data "aws_ami" "centos" {
     }
 }
 
-resource "aws_security_group" "spark" {
-    name = "spark"
-    description = "ad-hoc security group for spark, a standalone, multi-purpose instance"
-
-    # SSH
-    ingress {
-        from_port = 0
-        to_port = 22
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    # HTTP
-    ingress {
-        from_port = 0
-        to_port = 80
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    # HTTPS
-    ingress {
-        from_port = 0
-        to_port = 443
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-}
-
 resource "aws_instance" "spark" {
     instance_type = "t2.micro"
     ami = "${data.aws_ami.centos.id}"
@@ -57,6 +20,45 @@ resource "aws_instance" "spark" {
         delete_on_termination = "true"
     }
 
-    # user data
+}
 
+resource "aws_security_group" "spark" {
+    name = "spark"
+    description = "ad-hoc security group for spark, a standalone, multi-purpose instance"
+}
+
+resource "aws_security_group_rule" "ssh_inbound" {
+    type = "ingress"
+    from_port = 0
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    security_group_id = "${aws_security_group.spark.id}"
+}
+
+#resource "aws_security_group_rule" "http_inbound" {
+    #type = "ingress"
+    #from_port = 0
+    #to_port = 80
+    #protocol = "tcp"
+    #cidr_blocks = ["0.0.0.0/0"]
+    #security_group_id = "${aws_security_group.spark.id}"
+#}
+
+resource "aws_security_group_rule" "https_inbound" {
+    type = "ingress"
+    from_port = 0
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    security_group_id = "${aws_security_group.spark.id}"
+}
+
+resource "aws_security_group_rule" "all_outbound" {
+    type = "egress"
+    from_port = 0
+    to_port = 0
+    protocol = "all"
+    cidr_blocks = ["0.0.0.0/0"]
+    security_group_id = "${aws_security_group.spark.id}"
 }
