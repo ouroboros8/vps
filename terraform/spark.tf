@@ -1,19 +1,8 @@
-## AMI
-
-data "aws_ami" "centos" {
-  most_recent = true
-
-  filter {
-    name   = "product-code"
-    values = ["aw0evgkw8e5c1q413zgy5pjce"]
-  }
-}
-
 ## Instance
 
 resource "aws_instance" "spark" {
   instance_type = "t2.micro"
-  ami           = "${data.aws_ami.centos.id}"
+  ami           = "${data.aws_ami.centos7.id}"
   key_name      = "${var.key}"
 
   security_groups             = ["${aws_security_group.spark.name}"]
