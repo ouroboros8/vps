@@ -3,7 +3,7 @@
 resource "aws_instance" "spark" {
   instance_type = "t2.micro"
   ami           = "${data.aws_ami.centos7.id}"
-  key_name      = "${var.key}"
+  key_name      = "${aws_key_pair.gpg_auth.key_name}"
 
   security_groups             = ["${aws_security_group.spark.name}"]
   associate_public_ip_address = true
