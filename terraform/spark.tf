@@ -15,6 +15,10 @@ resource "aws_instance" "spark" {
     volume_size           = "30"
     delete_on_termination = "true"
   }
+
+  tags {
+    Name = "spark"
+  }
 }
 
 ## Security group
