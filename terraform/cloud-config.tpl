@@ -2,6 +2,8 @@
 #
 # vim: syntax=yaml
 
+hostname: ${hostname}
+
 users:
   - name: dan
     groups: wheel
