@@ -1,0 +1,7 @@
+---
+ - name: configure spark
+   hosts: spark
+   become: true
+
+   roles:
+     - geerlingguy.gogs
