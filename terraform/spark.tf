@@ -19,6 +19,10 @@ resource "aws_instance" "spark" {
   tags {
     Name = "spark"
   }
+
+  provisioner "local-exec" {
+    command = "echo ${aws_instance.spark.public_ip}"
+  }
 }
 
 ## Security group
