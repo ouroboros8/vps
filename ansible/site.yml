@@ -11,6 +11,25 @@
     - geerlingguy.nginx
 
   tasks:
+
+    - name: copy custom ssh_keygen_tmp SELinux module to server
+      copy:
+        src: files/ssh_keygen_tmp.pp
+        dest: /root/ssh_keygen_tmp.pp
+        owner: root
+        mode: '400'
+
+    # TODO refactor this into a module, this should be a handler
+    - name: allow ssh-keygen to read from tmp (gogs moves user keys to tmp for checking)
+      shell: semodule -i /root/ssh_keygen_tmp.pp
+
+    - name: allow nginx to reverse proxy to port 8080
+      seboolean:
+        name: httpd_can_network_connect
+        state: yes
+        persistent: yes
+      tags: [ config ]
+
     - name: copy gogs.ini to server
       tags: [ config ]
       template:
