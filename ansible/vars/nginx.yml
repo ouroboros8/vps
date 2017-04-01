@@ -1,0 +1,13 @@
+---
+# Vars for geerlingguy.certbot:
+certbot_auto_renew_user: root
+certbot_auto_renew_hour: 4
+certbot_auto_renew_minute: 11
+
+# vars for nginx_letsencrypt_rproxy
+letsencrypt_domains:
+  - git.glyx.co.uk
+vhosts:
+  - name: gogs
+    host: git.glyx.co.uk
+    port: 8080

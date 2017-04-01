@@ -1,0 +1,3 @@
+---
+mailgun_smtp_password: "{{ lookup('env', 'MAILGUN_SMTP_PASSWORD') }}"
+gogs_secret_key: "{{ lookup('env', 'GOGS_SECRET_KEY') }}"

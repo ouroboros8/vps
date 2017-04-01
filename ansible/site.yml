@@ -2,20 +2,15 @@
 - name: configure spark
   hosts: spark
   become: true
-  vars:
-    mailgun_smtp_password: "{{ lookup('env', 'MAILGUN_SMTP_PASSWORD') }}"
-    gogs_secret_key: "{{ lookup('env', 'GOGS_SECRET_KEY') }}"
-    certbot_auto_renew_user: root
-    certbot_auto_renew_hour: 4
-    certbot_auto_renew_minute: 11
-    letsetncrypt_domains:
-      - git.glyx.co.uk
+
+  vars_files:
+    - vars/nginx.yml
+    - vars/gogs.yml
 
   roles:
     - toolbox
     - geerlingguy.gogs
-    - geerlingguy.nginx
-    - geerlingguy.certbot
+    - nginx_letsencrypt_rproxy
 
   tasks:
 
@@ -39,43 +34,3 @@
         mode: '640'
       notify:
         - restart gogs
-
-    - name: nginx config
-      tags: [ config ]
-      copy:
-        src: files/nginx/nginx.conf
-        dest: /etc/nginx/nginx.conf
-        owner: nginx
-        mode: '640'
-      notify:
-        - validate nginx configuration
-        - reload nginx
-
-    - name: copy gogs nginx config to server
-      tags: [ config ]
-      copy:
-        src: files/nginx/gogs.conf
-        dest: /etc/nginx/conf.d/gogs.conf
-        owner: nginx
-        mode: '640'
-      notify:
-        - validate nginx configuration
-        - reload nginx
-
-    - name: allow nginx to reverse proxy to port 8080
-      tags: [ config ]
-      seboolean:
-        name: httpd_can_network_connect
-        state: yes
-        persistent: yes
-      notify:
-        - validate nginx configuration
-        - reload nginx
-
-    - name: if /etc/letsencrypt doesn't exist, set up cert
-      # Use certonly because we manage our nginx config, and don't want
-      # letsencrypt messing with it
-      shell: >
-        /opt/certbot/certbot-auto certonly --nginx --agree-tos --quiet
-          -m dstrong@glyx.co.uk
-          --domains {{ letsencrypt_domains|join(',') }}
