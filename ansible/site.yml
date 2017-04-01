@@ -8,6 +8,7 @@
 
   roles:
     - geerlingguy.gogs
+    - geerlingguy.nginx
 
   tasks:
     - name: install gogs.ini
@@ -20,3 +21,12 @@
         - restart gogs
       tags:
         - config
+    - name: copy gogs nginx config to server
+      copy:
+        src: files/nginx/gogs.conf
+        dest: /etc/nginx/conf.d/gogs.conf
+        owner: nginx
+        mode: '640'
+      notify:
+        - name: validate nginx configuration
+        - name: reload nginx
