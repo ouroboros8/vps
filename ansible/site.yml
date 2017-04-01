@@ -1,7 +1,20 @@
 ---
- - name: configure spark
-   hosts: spark
-   become: true
+- name: configure spark
+  hosts: spark
+  become: true
+  vars:
+    mailgun_smtp_password: "{{ lookup('env', 'MAILGUN_SMTP_PASSWORD') }}"
+    gogs_secret_key: "{{ lookup('env', 'GOGS_SECRET_KEY') }}"
 
-   roles:
-     - geerlingguy.gogs
+  roles:
+    - geerlingguy.gogs
+
+  tasks:
+    - name: install gogs.ini
+      template:
+        src: files/gogs.ini
+        dest: /home/git/gogs/custom/conf/app.ini
+        owner: git
+        mode: '644'
+      notify:
+        - restart gogs
