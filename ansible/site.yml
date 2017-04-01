@@ -12,6 +12,7 @@
       - git.glyx.co.uk
 
   roles:
+    - toolbox
     - geerlingguy.gogs
     - geerlingguy.nginx
     - geerlingguy.certbot

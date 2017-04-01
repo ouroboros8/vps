@@ -1,0 +1,15 @@
+---
+- name: set up EPEL with epel-release
+  yum:
+    name: epel-release
+    state: latest
+
+- name: install htop
+  yum:
+    name: htop
+    state: latest
+
+- name: install nmap
+  yum:
+    name: nmap-ncat
+    state: latest
