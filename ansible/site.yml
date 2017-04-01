@@ -11,12 +11,12 @@
     - geerlingguy.nginx
 
   tasks:
-    - name: install gogs.ini
+    - name: copy gogs.ini to server
       template:
-        src: files/gogs.ini
+        src: templates/gogs.ini
         dest: /home/git/gogs/custom/conf/app.ini
         owner: git
-        mode: '644'
+        mode: '640'
       notify:
         - restart gogs
       tags:
