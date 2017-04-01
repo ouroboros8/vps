@@ -20,6 +20,7 @@
         mode: '640'
       notify:
         - restart gogs
+
     - name: copy gogs nginx config to server
       tags: [ config ]
       copy:
@@ -28,5 +29,5 @@
         owner: nginx
         mode: '640'
       notify:
-        - name: validate nginx configuration
-        - name: reload nginx
+        - validate nginx configuration
+        - reload nginx
