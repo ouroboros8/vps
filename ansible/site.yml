@@ -12,6 +12,7 @@
 
   tasks:
     - name: copy gogs.ini to server
+      tags: [ config ]
       template:
         src: templates/gogs.ini
         dest: /home/git/gogs/custom/conf/app.ini
@@ -19,9 +20,8 @@
         mode: '640'
       notify:
         - restart gogs
-      tags:
-        - config
     - name: copy gogs nginx config to server
+      tags: [ config ]
       copy:
         src: files/nginx/gogs.conf
         dest: /etc/nginx/conf.d/gogs.conf
