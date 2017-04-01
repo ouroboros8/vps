@@ -50,32 +50,23 @@ resource "aws_security_group_rule" "all_spark_to_any" {
   security_group_id = "${aws_security_group.spark.id}"
 }
 
-# resource "aws_security_group_rule" "http_any_to_spark" {
-#   type              = "ingress"
-#   from_port         = 0
-#   to_port           = 80
-#   protocol          = "tcp"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = "${aws_security_group.spark.id}"
-# }
+resource "aws_security_group_rule" "http_any_to_spark" {
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.spark.id}"
+}
 
-# resource "aws_security_group_rule" "https_any_to_spark" {
-#   type              = "ingress"
-#   from_port         = 0
-#   to_port           = 443
-#   protocol          = "tcp"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = "${aws_security_group.spark.id}"
-# }
-
-# resource "aws_security_group_rule" "elasticsearch_minecraft_to_spark" {
-#   type              = "ingress"
-#   from_port         = 0
-#   to_port           = 9200
-#   protocol          = "tcp"
-#   source_security_group_id = "${aws_security_group.minecraft.id}"
-#   security_group_id = "${aws_security_group.spark.id}"
-# }
+resource "aws_security_group_rule" "https_any_to_spark" {
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.spark.id}"
+}
 
 ## Cloud-init
 
