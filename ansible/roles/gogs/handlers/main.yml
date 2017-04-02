@@ -1,0 +1,5 @@
+---
+# This allows ssh_keygen to read /tmp. This is required because gogs stores
+# user keys in /tmp and then tests them with ssh_keygen
+- name: load ssh_keygen_tmp semodule
+  shell: semodule -i /root/ssh_keygen_tmp.pp

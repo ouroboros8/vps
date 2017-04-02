@@ -1,0 +1,20 @@
+---
+
+- name: copy custom ssh_keygen_tmp SELinux module to server
+  copy:
+    src: files/ssh_keygen_tmp.pp
+    dest: /root/ssh_keygen_tmp.pp
+    owner: root
+    mode: '400'
+  notify:
+    - load ssh_keygen_tmp semodule
+
+- name: copy gogs.ini to server
+  tags: [ config ]
+  template:
+    src: templates/gogs.ini
+    dest: /home/git/gogs/custom/conf/app.ini
+    owner: git
+    mode: '640'
+  notify:
+    - restart gogs

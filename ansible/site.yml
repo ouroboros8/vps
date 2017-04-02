@@ -9,28 +9,5 @@
 
   roles:
     - toolbox
-    - geerlingguy.gogs
+    - gogs
     - nginx_letsencrypt_rproxy
-
-  tasks:
-
-    - name: copy custom ssh_keygen_tmp SELinux module to server
-      copy:
-        src: files/ssh_keygen_tmp.pp
-        dest: /root/ssh_keygen_tmp.pp
-        owner: root
-        mode: '400'
-
-    # TODO refactor this into a module, this should be a handler
-    - name: allow ssh-keygen to read from tmp (gogs moves user keys to tmp for checking)
-      shell: semodule -i /root/ssh_keygen_tmp.pp
-
-    - name: copy gogs.ini to server
-      tags: [ config ]
-      template:
-        src: templates/gogs.ini
-        dest: /home/git/gogs/custom/conf/app.ini
-        owner: git
-        mode: '640'
-      notify:
-        - restart gogs
