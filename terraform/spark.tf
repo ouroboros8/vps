@@ -6,9 +6,9 @@ resource "aws_instance" "spark" {
   key_name      = "${aws_key_pair.gpg_auth.key_name}"
 
   security_groups             = ["${aws_security_group.spark.name}"]
-  associate_public_ip_address = true
 
   user_data = "${data.template_file.spark-cloud-init.rendered}"
+  associate_public_ip_address = false
 
   root_block_device {
     volume_type           = "gp2"
@@ -19,9 +19,14 @@ resource "aws_instance" "spark" {
   tags {
     Name = "spark"
   }
+}
+
+# Elastic IP
+resource "aws_eip" "spark" {
+  instance = "${aws_instance.spark.id}"
 
   provisioner "local-exec" {
-    command = "echo ${aws_instance.spark.public_ip}"
+    command = "echo ${aws_eip.spark.public_ip}"
   }
 }
 
