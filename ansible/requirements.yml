@@ -2,4 +2,3 @@
 - src: geerlingguy.mysql
 - src: geerlingguy.gogs
 - src: geerlingguy.nginx
-- src: geerlingguy.certbot

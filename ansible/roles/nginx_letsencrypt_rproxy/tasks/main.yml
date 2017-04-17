@@ -1,4 +1,10 @@
 ---
+
+- name: clone letsencrypt from master
+  git:
+    repo: https://github.com/certbot/certbot.git
+    dest: /opt/certbot
+
 - name: ensure server_names_hash_bucket_size is not set
   # letsencrypt needs to temporarily override this because the hosts it uses
   # for authentication have very long names. The rest of the time the system
@@ -12,18 +18,6 @@
     - validate nginx configuration
     - reload nginx
 
-- name: add {{ item['name'] }} nginx config
-  tags: [ config ]
-  template:
-    src: templates/vhost.conf
-    dest: /etc/nginx/conf.d/{{ item['name'] }}.conf
-    owner: nginx
-    mode: '640'
-  notify:
-    - validate nginx configuration
-    - reload nginx
-  with_items: "{{ vhosts }}"
-
 - name: allow nginx to reverse proxy
   tags: [ config ]
   seboolean:
@@ -34,10 +28,11 @@
     - validate nginx configuration
     - reload nginx
 
-- name: does /etc/letsencrypt exist?
-  #TODO maybe we should be checking for each vhost under /etc/letsencrypt/live
-  shell: '[ -d /etc/letsencrypt ]'
-  register: letsencrypt_exists
+- name: do all letsencrypt vhosts exist?
+  shell: "[ -d /etc/letsencrypt/live/{{ item['host'] }} ]"
+  register: all_vhosts_present
+  ignore_errors: yes
+  with_items: "{{ vhosts }}"
 
 - name: if /etc/letsencrypt doesn't exist, set up certs
   # Use certonly because we manage our nginx config, and don't want
@@ -46,4 +41,16 @@
     /opt/certbot/certbot-auto certonly --nginx --agree-tos --quiet
     -m dstrong@glyx.co.uk
     --domains "{{ vhosts|json_query('[*].host')|join(',') }}"
-  when: letsencrypt_exists|failed
+  when: all_vhosts_present|failed
+
+- name: add vhost nginx configs
+  tags: [ config ]
+  template:
+    src: templates/vhost.conf
+    dest: /etc/nginx/conf.d/{{ item['name'] }}.conf
+    owner: nginx
+    mode: '640'
+  notify:
+    - validate nginx configuration
+    - reload nginx
+  with_items: "{{ vhosts }}"
