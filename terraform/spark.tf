@@ -5,10 +5,9 @@ resource "aws_instance" "spark" {
   ami           = "${data.aws_ami.centos7.id}"
   key_name      = "${aws_key_pair.gpg_auth.key_name}"
 
-  security_groups             = ["${aws_security_group.spark.name}"]
+  security_groups = ["${aws_security_group.spark.name}"]
 
   user_data = "${data.template_file.spark-cloud-init.rendered}"
-  associate_public_ip_address = false
 
   root_block_device {
     volume_type           = "gp2"
