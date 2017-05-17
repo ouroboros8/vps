@@ -28,29 +28,10 @@
     - validate nginx configuration
     - reload nginx
 
-- name: do all letsencrypt vhosts exist?
-  shell: "[ -d /etc/letsencrypt/live/{{ item['host'] }} ]"
-  register: all_vhosts_present
-  ignore_errors: yes
+- include: setup-vhost.yml
   with_items: "{{ vhosts }}"
+  loop_control:
+    loop_var: vhost
 
-- name: if /etc/letsencrypt doesn't exist, set up certs
-  # Use certonly because we manage our nginx config, and don't want
-  # letsencrypt messing with it
-  shell: >
-    /opt/certbot/certbot-auto certonly --nginx --agree-tos --quiet
-    -m dstrong@glyx.co.uk
-    --domains "{{ vhosts|json_query('[*].host')|join(',') }}"
-  when: all_vhosts_present|failed
-
-- name: add vhost nginx configs
-  tags: [ config ]
-  template:
-    src: templates/vhost.conf
-    dest: /etc/nginx/conf.d/{{ item['name'] }}.conf
-    owner: nginx
-    mode: '640'
-  notify:
-    - validate nginx configuration
-    - reload nginx
-  with_items: "{{ vhosts }}"
+#- name: auto-update certs
+    #--domains "{{ vhosts|json_query('[*].host')|join(',') }}"
