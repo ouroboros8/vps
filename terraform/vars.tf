@@ -9,3 +9,7 @@ variable "big_minecraft" {
 
   default = "false"
 }
+
+variable "http_off" {
+  default = false
+}
