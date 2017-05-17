@@ -9,6 +9,20 @@
   notify:
     - load ssh_keygen_tmp semodule
 
+- name: create config dirs (/home/git/gogs/custom)
+  file:
+    path: /home/git/gogs/custom
+    state: directory
+    owner: git
+    mode: '750'
+
+- name: create config dirs (/home/git/gogs/custom/conf)
+  file:
+    path: /home/git/gogs/custom/conf
+    state: directory
+    owner: git
+    mode: '750'
+
 - name: copy gogs.ini to server
   tags: [ config ]
   template:
