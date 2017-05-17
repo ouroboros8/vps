@@ -38,7 +38,7 @@ resource "aws_security_group" "spark" {
 
 resource "aws_security_group_rule" "ssh_any_to_spark" {
   type              = "ingress"
-  from_port         = 0
+  from_port         = 22
   to_port           = 22
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
@@ -56,7 +56,7 @@ resource "aws_security_group_rule" "all_spark_to_any" {
 
 resource "aws_security_group_rule" "http_any_to_spark" {
   type              = "ingress"
-  from_port         = 0
+  from_port         = 80
   to_port           = 80
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "http_any_to_spark" {
 
 resource "aws_security_group_rule" "https_any_to_spark" {
   type              = "ingress"
-  from_port         = 0
+  from_port         = 443
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
