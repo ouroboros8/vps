@@ -1,0 +1,10 @@
+[Unit]
+Description=Renew certbot certificates (certonly)
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizeDelaySec=86400
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+[Unit]
+Description=Renew certbot certificates
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/certbot/certbot-auto renew
