@@ -22,6 +22,11 @@ need a few roles from the [Ansible Galaxy](https://galaxy.ansible.com/):
 
     ansible-galaxy install -r requirements.yml
 
+#### Notes
+
+ - The passwordstore lookup, which is used to get the gogs secret and mailgun
+   smtp password, requires `ansible>2.4.0` to work with python3.
+
 ### Running
 
 You'll need a few environment variables set:
