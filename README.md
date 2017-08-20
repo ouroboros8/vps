@@ -15,6 +15,9 @@ Ansible then provisions instances.
 
 ## Notes
 
+  - Make sure default vhost is removed, is geerlingguy installing that?
+  - Do we even need geerlingguy nginx?
+
 ### Mutual TLS Key Generation
 
 Generate keys
