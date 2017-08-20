@@ -10,4 +10,4 @@
   roles:
     - toolbox
     - gogs
-    - nginx_letsencrypt_rproxy
+    - nginx_reverse_proxy
