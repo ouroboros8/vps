@@ -1,0 +1,5 @@
+---
+gogs_vhost:
+  name: gogs
+  host: git.glyx.co.uk
+  port: 8080

@@ -1,0 +1,27 @@
+---
+
+- name: clone letsencrypt from master
+  git:
+    repo: https://github.com/certbot/certbot.git
+    dest: /opt/certbot
+
+- name: create certbot-renew systemd service
+  tags: [ config ]
+  copy:
+    src: files/certbot-renew.service
+    dest: /etc/systemd/system/certbot-renew.service
+    owner: root
+    mode: '640'
+
+- name: create certobt-renew systemd timer
+  tags: [ config ]
+  copy:
+    src: files/certbot-renew.timer
+    dest: /etc/systemd/system/certbot-renew.timer
+    owner: root
+    mode: '640'
+
+- name: enable certbot-renew timer
+  systemd:
+    name: certbot-renew.timer
+    enabled: true

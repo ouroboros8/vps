@@ -1,14 +1,10 @@
 ---
 
-- name: clone letsencrypt from master
-  git:
-    repo: https://github.com/certbot/certbot.git
-    dest: /opt/certbot
-
 - name: ensure server_names_hash_bucket_size is not set
-  # letsencrypt needs to temporarily override this because the hosts it uses
-  # for authentication have very long names. The rest of the time the system
-  # default should be fine.
+  # letsencrypt temporarily overrides this during setup because the hosts it
+  # uses for authentication have very long names. The rest of the time the
+  # system default should be fine, so we just remove the explicit setting
+  # here.
   tags: [ config ]
   lineinfile:
     dest: /etc/nginx/nginx.conf
@@ -18,7 +14,7 @@
     - validate nginx configuration
     - reload nginx
 
-- name: allow nginx to reverse proxy
+- name: set SELinux bool which allows nginx to reverse proxy
   tags: [ config ]
   seboolean:
     name: httpd_can_network_connect
@@ -28,28 +24,7 @@
     - validate nginx configuration
     - reload nginx
 
-- include: setup-vhost.yml
+- include: setup-vhost.yml # this includes letsencrypt setup for that host
   with_items: "{{ vhosts }}"
   loop_control:
     loop_var: vhost
-
-- name: create certbot-renew systemd service
-  tags: [ config ]
-  copy:
-    src: files/certbot-renew.service
-    dest: /etc/systemd/system/certbot-renew.service
-    owner: root
-    mode: '640'
-
-- name: create certobt-renew systemd timer
-  tags: [ config ]
-  copy:
-    src: files/certbot-renew.timer
-    dest: /etc/systemd/system/certbot-renew.timer
-    owner: root
-    mode: '640'
-
-- name: enable certbot-renew timer
-  systemd:
-    name: certbot-renew.timer
-    enabled: true

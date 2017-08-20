@@ -4,10 +4,14 @@
   become: true
 
   vars_files:
-    - vars/nginx.yml
+    - vars/vhosts.yml
     - vars/gogs.yml
 
   roles:
     - toolbox
+
     - gogs
-    - nginx_reverse_proxy
+
+    - role: nginx_reverse_proxy
+      vhosts:
+        - "{{ gogs_vhost }}"

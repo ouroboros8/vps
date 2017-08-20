@@ -1,0 +1,5 @@
+---
+upstream: localhost
+proxy_scheme: http
+mutual_tls: false
+client_crt: ""
