@@ -41,7 +41,7 @@ server {
 Firefox wants a PKCS#12 archive:
 
 ```bash
-openssl pkcs12 -export -in ~/client.crt -inkey ~/client.key -name Adhoc -out adhoc.p12
+openssl pkcs12 -export -in client.crt -inkey client.key -name Adhoc -out adhoc.p12
 # adhoc.p12 can be imported into the browser
 rm client.key
 ```
