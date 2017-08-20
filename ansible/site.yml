@@ -4,8 +4,9 @@
   become: true
 
   vars_files:
-    - vars/vhosts.yml
     - vars/gogs.yml
+    - vars/vhosts.yml
+    - vars/mutual_tls_client_cert.yml
 
   roles:
     - toolbox
@@ -15,3 +16,4 @@
     - role: nginx_reverse_proxy
       vhosts:
         - "{{ gogs_vhost }}"
+      client_crt: "{{ client_cert }}"

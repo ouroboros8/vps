@@ -24,6 +24,19 @@
     - validate nginx configuration
     - reload nginx
 
+- name: create nginx SSL directory for client certs
+  file:
+    state: directory
+    path: /etc/nginx/ssl/trust/
+    mode: 755
+
+- name: create TLS client cert if needed by any vhost
+  when: vhosts|json_query('[[*].mutual_tls]')|select
+  copy:
+    content: "{{ client_cert }}"
+    dest: /etc/nginx/ssl/trust/client.crt
+    mode: 640
+
 - include: setup-vhost.yml # this includes letsencrypt setup for that host
   with_items: "{{ vhosts }}"
   loop_control:
