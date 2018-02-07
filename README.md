@@ -23,8 +23,11 @@ Ansible then provisions instances.
 Generate keys
 
 ```bash
-openssl req -x509 -nodes -newkey rsa:4096 -keyout client.key -out client.crt
+openssl req -x509 -days 9999 -nodes -newkey rsa:4096 -keyout client.key -out client.crt
 ```
+
+Note that `-days 9999` means the key will expire in 9999 days (slightly over 27
+years). The default if `-days` is not set is 30 days.
 
 Put client key on webserver at `/etc/nginx/ssl/trust/client.crt`
 
