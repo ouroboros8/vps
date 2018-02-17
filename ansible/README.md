@@ -26,6 +26,9 @@ need a few roles from the [Ansible Galaxy](https://galaxy.ansible.com/):
 
  - The passwordstore lookup, which is used to get the gogs secret and mailgun
    smtp password, requires `ansible>2.4.0` to work with python3.
+ - The passwordstore lookup expects an executable called `pass` in PATH. If you
+   want to use it with `gopass` or another `pass`-compatible tool, you'll need
+   to create a symlink to it called `pass`.
 
 ### Running
 
