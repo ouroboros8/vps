@@ -9,6 +9,8 @@
     - vars/mutual_tls_client_cert.yml
 
   roles:
+    - base
+
     - toolbox
 
     - gogs

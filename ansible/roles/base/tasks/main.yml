@@ -1,0 +1,16 @@
+---
+- name: install yum-cron
+  yum:
+    name: yum-cron
+    state: latest
+
+- name: add yum-cron config file for secuity upgrades
+  copy:
+    content: |
+      update_cmd     = security
+      apply_upgrades = true
+    dest: /root/ssh_keygen_tmp.pp
+    owner: root
+    mode: '400'
+  notify:
+    - load ssh_keygen_tmp semodule
