@@ -60,14 +60,6 @@ Now you can run ansible:
  - The geerlingguy nginx role sets the hash bucket size in nginx.conf which then
    gets removed every run
 
- - Mutual TLS support
-
- - Default vhosts (so that only requests to correct vhost domains are accepted)
-
  - Not 100% sure that vhosts and letsencrypt are correctly applied at first run
 
- - In order to actually set up gogs from scratch, have to get gogs running on
-   8080 but also disable registration so I can create first user. This would be
-   fixed by starting from gogs db backup.
-
- - On that note: gogs db backup
+ - gogs db backup
