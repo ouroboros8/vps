@@ -4,6 +4,7 @@
   git:
     repo: https://github.com/certbot/certbot.git
     dest: /opt/certbot
+    force: true
 
 - name: create certbot-renew systemd service
   tags: [ config ]
