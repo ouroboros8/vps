@@ -17,6 +17,26 @@ scrape_configs:
     labels:
       job: varlogs
       __path__: /var/log/*.log
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/messages
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/secure
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/cron
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/dmesg
 - job_name: gogs
   entry_parser: raw
   static_configs:
@@ -25,3 +45,19 @@ scrape_configs:
     labels:
       job: gogs
       __path__: /var/log/gogs/*.log
+- job_name: nginx
+  entry_parser: raw
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/nginx/*.log
+- job_name: letsencrypt
+  entry_parser: raw
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/letsencrypt/*.log
