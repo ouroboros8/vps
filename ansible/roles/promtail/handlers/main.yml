@@ -1,0 +1,8 @@
+---
+- name: restart promtail
+  service:
+    name: promtail
+    state: restarted
+
+- name: systemd daemon-reload
+  shell: systemd daemon-reload

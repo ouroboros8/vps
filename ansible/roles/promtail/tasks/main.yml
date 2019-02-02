@@ -1,0 +1,33 @@
+---
+
+- name: create promtail systemd service
+  template:
+    src: templates/promtail.service
+    dest: /etc/systemd/system/promtail.service
+    owner: root
+    mode: '644'
+  notify:
+    - restart promtail
+    - systemd daemon-reload
+
+- name: create /etc/promtail directory
+  file:
+    state: directory
+    path: /etc/promtail
+    mode: 755
+
+- name: create promtail config
+  tags: [ config ]
+  template:
+    src: templates/config.yaml
+    dest: /etc/promtail/config.yaml
+    owner: root
+    mode: '640'
+  notify:
+    - restart promtail
+
+- name: start promtail service
+  service:
+    name: promtail
+    enabled: true
+    state: started

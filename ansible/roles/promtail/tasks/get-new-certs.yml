@@ -1,0 +1,22 @@
+---
+
+- name: add vhost nginx configs (with SSL if there are live certs)
+  tags: [ config ]
+  template:
+    src: templates/vhost.conf
+    dest: /etc/nginx/conf.d/{{ vhost['name'] }}.conf
+    owner: nginx
+    mode: '640'
+  notify:
+    - validate nginx configuration
+    - reload nginx
+
+# Note that we don't need to immediately relaod nginx here for certbot to pick
+# up the new vhost; apparently that's automagical.
+- name: if /etc/letsencrypt doesn't exist, set up certs
+  # Use certonly because we manage our nginx config, and don't want
+  # letsencrypt messing with it
+  shell: >
+    /opt/certbot/certbot-auto certonly -n --nginx --agree-tos -m dstrong@glyx.co.uk
+                                       --domains "{{ vhost['host'] }}"
+  register: has_certs

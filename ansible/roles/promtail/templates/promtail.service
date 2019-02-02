@@ -1,0 +1,15 @@
+[Unit]
+Description=Promtail on docker
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop promtail
+ExecStartPre=-/usr/bin/docker rm promtail
+ExecStartPre=/usr/bin/docker pull grafana/promtail:master
+ExecStart=/usr/bin/docker run --name promtail --volume "/etc/promtail:/etc/promtail" --volume "/var/log:/var/log" grafana/promtail:master -config.file=/etc/promtail/config.yaml
+
+[Install]
+WantedBy=multi-user.target

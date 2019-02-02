@@ -5,8 +5,9 @@
 
   vars_files:
     - vars/gogs.yml
-    - vars/vhosts.yml
     - vars/mutual_tls_client_cert.yml
+    - vars/promtail.yml
+    - vars/vhosts.yml
 
   roles:
     - base
@@ -19,3 +20,6 @@
       vhosts:
         - "{{ gogs_vhost }}"
       client_crt: "{{ client_cert }}"
+
+    - role: promtail
+      url: "https://1865:{{ grafana_cloud_api_key }}@logs-us-west1.grafana.net/api/prom/push"

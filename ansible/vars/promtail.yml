@@ -1,0 +1,2 @@
+---
+grafana_cloud_api_key: "{{ lookup('passwordstore', 'cloud/grafana-api-publisher') }}"

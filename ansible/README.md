@@ -37,20 +37,21 @@ You'll need a few environment variables set:
  - AWS credentials (authentication to AWS required by `ec2.py`): I recommend
    using [AWS profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-multiple-profiles)
    and setting `AWS_PROFILE` to the name of the profile you wish to use.
- - `MAILGUN_SMTP_PASSWORD`: the SMTP password for your mailgun account. User is
-   currently hard-coded to `postmaster@git.glyx.co.uk`.
- - `GOGS_SECRET_KEY`: secret key for GOSS, used internally for crypto of some
-   kind. Make it long and random.
 
 Once you've set these things up:
 
-    export AWS_PROFILE=<profile_name>
-    export MAILGUN_SMTP_PASSWORD=<mailgun_pass>
-    export GOGS_SECRET_KEY=<gogs_secret>
+    AWS_PROFILE=<profile_name>
 
 Now you can run ansible:
 
     ansible-playbook -i ec2.py site.yml
+
+### Secrets
+
+Secrets are read from [gopass](https://github.com/gopasspw/gopass) using
+[passwordstore lookup plugin](https://docs.ansible.com/ansible/latest/plugins/lookup/passwordstore.html).
+In order for this plugin to work you'll need gopass to be exposed as `pass` in
+your PATH.
 
 ## Todo
 
