@@ -15,49 +15,44 @@ scrape_configs:
   - targets:
       - localhost
     labels:
-      job: varlogs
+      host: spark
+      type: system
       __path__: /var/log/*.log
   - targets:
       - localhost
     labels:
-      job: varlogs
+      host: spark
       __path__: /var/log/messages
   - targets:
       - localhost
     labels:
-      job: varlogs
+      host: spark
       __path__: /var/log/secure
   - targets:
       - localhost
     labels:
-      job: varlogs
+      host: spark
       __path__: /var/log/cron
   - targets:
       - localhost
     labels:
-      job: varlogs
+      host: spark
       __path__: /var/log/dmesg
-- job_name: gogs
-  entry_parser: raw
-  static_configs:
   - targets:
       - localhost
     labels:
-      job: gogs
+      host: spark
+      type: gogs
       __path__: /var/log/gogs/*.log
-- job_name: nginx
-  entry_parser: raw
-  static_configs:
   - targets:
       - localhost
     labels:
-      job: varlogs
+      host: spark
+      type: nginx
       __path__: /var/log/nginx/*.log
-- job_name: letsencrypt
-  entry_parser: raw
-  static_configs:
   - targets:
       - localhost
     labels:
-      job: varlogs
+      host: spark
+      type: letsencrypt
       __path__: /var/log/letsencrypt/*.log
