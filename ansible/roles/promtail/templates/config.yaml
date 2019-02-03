@@ -71,4 +71,5 @@ scrape_configs:
   - targets:
       - localhost
     labels:
+      host: spark
       __path__: /var/log/letsencrypt/*.log
